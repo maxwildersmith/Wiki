@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:text="QUESTION QUESTION"
+        android:text="ARTICLE DOES NOT HAVE A BODY"
         android:id="@+id/question"/>
     <Space
         android:layout_width="match_parent"

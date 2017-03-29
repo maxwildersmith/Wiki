@@ -115,13 +115,6 @@ public class Quiz extends AppCompatActivity {
                 int randomParagraph =0;
                 String restofarticle;
 
-
-//                for(int i=0;i<body.length();i++) {
-//                    Log.e("asdf", "2" + i + " " + body.getJSONObject(i).getJSONArray("content"));
-//
-//
-//                    if ((content = body.getJSONObject(i).getJSONArray("content")).length() != 0) {
-
                 for(int i =0;i<body.length();i++)
                     if((content = body.getJSONObject(i).getJSONArray("content").getJSONObject(i)).has("text")&&content.getString("text").trim().length()>0){
                         question.setText(blankOut(content.getString("text"),articles[art].getString("title")));
@@ -251,11 +244,13 @@ public class Quiz extends AppCompatActivity {
     }
 
     public static String blankOut(String target, String answer){
+        String[] anserWords = answer.split(" ");
         String out = target;
         String blanks ="";
-        for(int i=0;i<answer.length();i++)
+        for(int i=0;i<anserWords[0].length();i++)
             blanks+="_";
-        out = out.replaceAll(answer,blanks);
+        for(String word: anserWords)
+            out = out.replaceAll(word,blanks);
         return out;
     }
 
