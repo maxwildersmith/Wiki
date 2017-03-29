@@ -96,6 +96,8 @@ public class Quiz extends AppCompatActivity {
                 int art = (int)(Math.random()*articles.length);
                  correctOpt = (int)(Math.random()*4);
                 int x=-1;
+                String[] articleTitles = {""};
+
                 for(int i=0;i<options.length;i++)
                     if((x=(int)(Math.random()*articles.length))!=art)
                         for(RadioButton r: options)
