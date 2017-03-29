@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class Quiz extends AppCompatActivity {
     private RadioButton[] options;//opt1,opt2,opt3,opt4;
     private Button submit;
     private CountDownTimer time;
+    private RadioGroup radioGroup;
     private JSONObject data;
     public static final String DATA_NAME = "data stuffs";
     private static final String GET_ARTICLES = "/api/v1/Articles/List?";
@@ -43,6 +46,7 @@ public class Quiz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+        radioGroup = (RadioGroup)findViewById(R.id.RGroup);
         title = (TextView)findViewById(R.id.title);
         timer = (TextView)findViewById(R.id.timer);
         question = (TextView)findViewById(R.id.question);
@@ -178,6 +182,8 @@ public class Quiz extends AppCompatActivity {
         qsLeft--;
         boolean empty=true;
 
+
+
         if(started) {
             for(RadioButton r: options) {
                 if (r.isChecked())
@@ -200,11 +206,7 @@ public class Quiz extends AppCompatActivity {
             question.setVisibility(View.VISIBLE);
             title.setText(getIntent().getStringExtra("name"));
         }
-
-        for(RadioButton r: options)
-            r.setChecked(false);
-
-
+        radioGroup.clearCheck();
         //else
             //time.cancel();
 

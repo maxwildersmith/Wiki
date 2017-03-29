@@ -176,8 +176,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode==101)
+        if(resultCode==101) {
             lastScore.setText(data.getStringExtra("out"));
 
+        }
     }
 }
