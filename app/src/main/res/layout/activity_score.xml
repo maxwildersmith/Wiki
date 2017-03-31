@@ -29,11 +29,27 @@
             android:layout_height="wrap_content"
             android:text="Play another Wiki"
             android:id="@+id/home"/>
+
     </LinearLayout>
-    <Button
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/history"
-        android:text="Past Wikis"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Past Wikis" />
+
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset Score"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </LinearLayout>

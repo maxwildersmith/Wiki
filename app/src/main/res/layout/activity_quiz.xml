@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:id="@+id/transitions_container2"
     tools:context="com.example.quiz.eduquiz.Quiz">
     <TextView
         android:layout_width="wrap_content"

@@ -2,13 +2,18 @@ package com.example.quiz.eduquiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,9 +42,12 @@ public class Quiz extends AppCompatActivity {
     public static final String DATA_NAME = "data stuffs";
     private static final String GET_ARTICLES = "/api/v1/Articles/List?";
     private static final String GET_INFO = "/api/v1/Articles/AsSimpleJson?id=";
+    public static final String URLS = "1234";
     private int correctOpt,score,qsLeft;
     private boolean started = false;
     public static String BADART = "Write the text of your article here!";
+    private ViewGroup viewGroup;
+    private SharedPreferences.Editor url;
 
 
     @Override
@@ -51,6 +59,7 @@ public class Quiz extends AppCompatActivity {
         timer = (TextView)findViewById(R.id.timer);
         question = (TextView)findViewById(R.id.question);
         submit = (Button)findViewById(R.id.next);
+        viewGroup = (ViewGroup) findViewById(R.id.transitions_container2);
 
         score=0;
         qsLeft=10;
@@ -64,9 +73,17 @@ public class Quiz extends AppCompatActivity {
 
 
         submit.setText("Start!");
+
+        url = getSharedPreferences(URLS, MODE_PRIVATE).edit();
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TransitionSet set = new TransitionSet()
+
+                        .addTransition(new Fade());
+
+                TransitionManager.beginDelayedTransition(viewGroup, set);
                 checkAnswer();
             }
         });
@@ -109,6 +126,8 @@ public class Quiz extends AppCompatActivity {
                         i--;
                 options[correctOpt].setText(articles[art].getString("title"));
                 JSONArray body = new JSONObject(new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_INFO+articles[art].getString("id"),null,"").get()).getJSONArray("sections");
+                url.putString("url", new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_INFO+articles[art].getString("id"),null,"").get());
+                url.commit();
                 JSONObject content = null;
                 Log.e("asdf","longest: "+getLargestSection(body));
                 Log.e("asdf"," Object 0 in body "+body.getJSONObject(0));

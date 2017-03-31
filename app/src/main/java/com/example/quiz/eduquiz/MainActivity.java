@@ -5,8 +5,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private WikiFragment frag;
     public static final String BASE_URL="http://www.wikia.com/api/v1/Wikis/ByString/?string=" ;
     private TextView lastScore;
+    private ViewGroup viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.go);
         output = ((TextView)findViewById(R.id.data));
 
+        viewGroup = (ViewGroup) findViewById(R.id.transitions_container);
+
         String s = "";
         String out = "";
 
@@ -75,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 wikis.clear();
                 String in = "";
                 if(input.getText().toString().trim().length()==0){
@@ -95,8 +104,11 @@ public class MainActivity extends AppCompatActivity {
                         s="";
                         JSONArray json = jsonO.getJSONArray("items");
                         for(int i=0;i<json.length();i++)
-                            if(json.getJSONObject(i).optString("language").equals("en")&&json.getJSONObject(i).optString("topic")!=null)
+                            if(json.getJSONObject(i).optString("language").equals("en")&&json.getJSONObject(i).optString("topic")!=null){
+                                TransitionManager.beginDelayedTransition(viewGroup, new TransitionSet()
+                                        .addTransition(new AutoTransition()));
                                 wikis.add(new Wiki(json.getJSONObject(i).optString("name"),json.getJSONObject(i).optString("domain")));
+                        }
                         //s+=json.getJSONObject(i).optString("name")+"\n";
                         frag.populateList(wikis);
 
