@@ -11,6 +11,11 @@ import java.util.Set;
 public class Wiki implements Comparable<Wiki>{
     String name,url;
 
+    public Wiki(String url){
+        this.url = url;
+        name = "history wiki";
+    }
+
     public Wiki(String name, String url) {
         this.name = name;
         this.url = url;
@@ -28,16 +33,7 @@ public class Wiki implements Comparable<Wiki>{
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
-    public Intent getIntent(Context context){
-        Intent in = new Intent(context,Quiz.class);
-        in.putExtra(Quiz.DATA_NAME,getUrl());
-        in.putExtra("name", getName());
-        return in;
-    }
 
     @Override
     public int compareTo(Wiki wiki) {

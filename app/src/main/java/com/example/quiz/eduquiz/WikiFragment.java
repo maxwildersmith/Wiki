@@ -14,9 +14,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by csaper6 on 3/13/17.
- */
 public class WikiFragment extends ListFragment {
     private List<Wiki> wikis;
     private WikiAdapter adapter;
@@ -25,21 +22,14 @@ public class WikiFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        //create our list of heroes
         wikis = new ArrayList<>();
-        //populateList();
         Comparator c = null;
         Collections.sort(wikis, c);
 
 
-        //fill the custom adapter
         adapter = new WikiAdapter(getActivity(), wikis);
 
 
-
-
-
-        //set the listView's adapter
         setListAdapter(adapter);
 
         return rootView;

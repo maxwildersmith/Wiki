@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText input;
     private Button button,score;
-    private TextView output;
-    private String search;
+    private String history;
     private ArrayList<Wiki> wikis;
     private WikiFragment frag;
     public static final String BASE_URL="http://www.wikia.com/api/v1/Wikis/ByString/?string=" ;
@@ -76,12 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         input = (EditText)findViewById(R.id.input);
         button = (Button)findViewById(R.id.go);
-        output = ((TextView)findViewById(R.id.data));
 
-        viewGroup = (ViewGroup) findViewById(R.id.transitions_container);
-
-        String s = "";
-        String out = "";
+        viewGroup = (ViewGroup) findViewById(R.id.transition_container);
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -101,13 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                String s="";
                 try {
                     String out=new PersonSearch().execute(BASE_URL+in, null,"").get();
                     JSONObject jsonO;
                     try {
                         jsonO = new JSONObject(out);
-                        s="";
                         JSONArray json = jsonO.getJSONArray("items");
                         for(int i=0;i<json.length();i++)
                             if(json.getJSONObject(i).optString("language").equals("en")&&json.getJSONObject(i).optString("topic")!=null){
@@ -122,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    output.setText(s);
 
 
                 } catch (InterruptedException e) {
@@ -150,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.e(TAG, "onCreate: blah blah");
 //            Toast.makeText(MainActivity.this, "ARGGHHHH!!!!", Toast.LENGTH_SHORT).show();
 //        }
-
-
-
 
     }
 
@@ -185,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==101) {
             lastScore.setText(data.getStringExtra("out"));
-
+            history = data.getStringExtra("out")+history;
         }
     }
 }

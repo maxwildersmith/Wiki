@@ -33,19 +33,14 @@ import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
 
 public class Quiz extends AppCompatActivity {
-    private TextView title, timer,question;
+    private TextView title,question;
     private RadioButton[] options;//opt1,opt2,opt3,opt4;
     private Button submit;
-    private CountDownTimer time;
     private RadioGroup radioGroup;
-    private JSONObject data;
-    public static final String DATA_NAME = "data stuffs";
-    private static final String GET_ARTICLES = "/api/v1/Articles/List?";
-    private static final String GET_INFO = "/api/v1/Articles/AsSimpleJson?id=";
-    public static final String URLS = "1234";
+    public static final String DATA_NAME = "data stuffs", URLS = "1234";
+    private static final String GET_ARTICLES = "/api/v1/Articles/List?", GET_INFO = "/api/v1/Articles/AsSimpleJson?id=";
     private int correctOpt,score,qsLeft;
     private boolean started = false;
-    public static String BADART = "Write the text of your article here!";
     private ViewGroup viewGroup;
     private SharedPreferences.Editor url;
 
@@ -56,7 +51,6 @@ public class Quiz extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         radioGroup = (RadioGroup)findViewById(R.id.RGroup);
         title = (TextView)findViewById(R.id.title);
-        timer = (TextView)findViewById(R.id.timer);
         question = (TextView)findViewById(R.id.question);
         submit = (Button)findViewById(R.id.next);
         viewGroup = (ViewGroup) findViewById(R.id.transitions_container2);
@@ -87,11 +81,7 @@ public class Quiz extends AppCompatActivity {
                 checkAnswer();
             }
         });
-
-
     }
-
-
 
     private void getData() {
 
@@ -100,8 +90,6 @@ public class Quiz extends AppCompatActivity {
             finish();
         }
 
-        if(time!=null)
-            time.cancel();
         try {
             String s = new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_ARTICLES,null,"").get();
             try {
@@ -147,20 +135,6 @@ public class Quiz extends AppCompatActivity {
                     getData();
                 }
 
-//                time = new CountDownTimer(10000,1000) {
-//                    @Override
-//                    public void onTick(long l) {
-//                        timer.setText(l/1000.+" seconds left");
-//                    }
-//
-//                    @Override
-//                    public void onFinish() {
-//                        Toast.makeText(Quiz.this, "Out of Time", Toast.LENGTH_SHORT).show();
-//                        //checkAnswer();
-//
-//                    }
-//                };
-//                time.start();
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("asdf",""+s);
@@ -201,13 +175,10 @@ public class Quiz extends AppCompatActivity {
         else{
             for(RadioButton r:options)
                 r.setVisibility(View.VISIBLE);
-            //timer.setVisibility(View.VISIBLE);
             question.setVisibility(View.VISIBLE);
             title.setText(getIntent().getStringExtra("name"));
         }
         radioGroup.clearCheck();
-        //else
-            //time.cancel();
 
 
         getData();
@@ -242,7 +213,7 @@ public class Quiz extends AppCompatActivity {
     }
     public static JSONObject getLargestSection(JSONArray array) throws JSONException {
         Log.e("asdf666",array.toString());
-        JSONObject longest = array.getJSONObject(0);//.getJSONArray("content").getJSONObject(0);
+        JSONObject longest = array.getJSONObject(0);
         for(int i =1;i<array.length();i++)
             if(array.getJSONObject(i).getJSONArray("content").getJSONObject(0).optString("text").length()>longest.getJSONArray("content").getJSONObject(0).optString("text").length())
                 longest = array.getJSONObject(i);
@@ -262,7 +233,7 @@ public class Quiz extends AppCompatActivity {
 
     @Override
     public void finish() {
-        setResult(101,new Intent().putExtra("out",score+" out of "+(10-qsLeft)+" on "+getIntent().getStringExtra("name")));
+        setResult(101,new Intent().putExtra("out",score+" out of "+(10-qsLeft)+" on "+getIntent().getStringExtra("name")).putExtra("url",getIntent().getStringExtra(DATA_NAME)));
         super.finish();
     }
 }

@@ -45,21 +45,20 @@ public class Score extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
             }
         });
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences(URLS, MODE_PRIVATE);
-                String restoredText = pref.getString("url", null);
+//                SharedPreferences pref = getSharedPreferences(URLS, MODE_PRIVATE);
+//                String restoredText = pref.getString("url", null);
+//
+//                if (restoredText != null) {
+//                    pastUrl = pref.getString("url", "NO URL FOUND!");
+//                }
+//                Toast.makeText(Score.this, pastUrl, Toast.LENGTH_SHORT).show();
 
-                if (restoredText != null) {
-                    pastUrl = pref.getString("url", "NO URL FOUND!");
-                }
-                Toast.makeText(Score.this, pastUrl, Toast.LENGTH_SHORT).show();
+
             }
         });
 
