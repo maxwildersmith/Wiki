@@ -46,10 +46,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView lastScore;
     private ViewGroup viewGroup;
 
+    private ViewGroup container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        container = (ViewGroup)findViewById(R.id.transition_container);
 
         lastScore = (TextView)findViewById(R.id.lastScore);
 
@@ -85,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 wikis.clear();
+                TransitionManager.beginDelayedTransition(container,new TransitionSet().addTransition(new AutoTransition()).setDuration(300).setStartDelay(50));
+
                 String in = "";
                 if(input.getText().toString().trim().length()==0){
                     Toast.makeText(MainActivity.this, "Enter Text.", Toast.LENGTH_LONG).show();
@@ -149,17 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-//    public static String urlify(String s){
-//        String[] chars = new String[s.length()];
-//        for(int i=0;i<chars.length;i++)
-//            if(chars[i].equals(" "))
-//                chars[i] = "%20";
-//        String out ="";
-//        for(String c:chars)
-//            out+=c;
-//        return out;
-//    }
 
     public class PersonSearch extends AsyncTask<String, Void, String> {
         @Override

@@ -9,22 +9,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:id="@+id/transitions_container"
+    android:id="@+id/transition_container"
     tools:context="com.example.quiz.eduquiz.MainActivity">
 
     <TextView
-        android:id="@+id/lastScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search for a wiki to begin!"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="18sp" />
-
+        android:id="@+id/lastScore"
+        android:text="Search for a wiki to begin \u2070"/>
     <EditText
-        android:id="@+id/input"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter things in here: " />
+        android:hint="Enter Thing: "
+        android:id="@+id/input"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,12 +31,11 @@
             android:layout_height="wrap_content"
             android:text="Score"
             android:id="@+id/score"/>
-
         <Button
-            android:id="@+id/go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search!" />
+            android:text="GO"
+            android:id="@+id/go"/>
     </LinearLayout>
 
     <TextView

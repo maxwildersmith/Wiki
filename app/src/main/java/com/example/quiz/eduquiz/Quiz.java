@@ -113,7 +113,9 @@ public class Quiz extends AppCompatActivity {
                 int art = (int)(Math.random()*articles.length);
                  correctOpt = (int)(Math.random()*4);
                 int x=-1;
-                String[] articleTitles = {""};
+                String[] articleTitles = new String[articles.length];
+                for(int i=0;i<articles.length;i++)
+                    articleTitles[i] = articles[i].getString("title");
 
                 for(int i=0;i<options.length;i++)
                     if((x=(int)(Math.random()*articles.length))!=art)
@@ -133,28 +135,11 @@ public class Quiz extends AppCompatActivity {
                 Log.e("asdf"," Object 0 in body "+body.getJSONObject(0));
                 Log.e("asdf"," Content from object 0 "+body.getJSONObject(0).getJSONArray("content"));
                 question.setText("");
-                int randomParagraph =0;
-                String restofarticle;
 
                 for(int i =0;i<body.length();i++)
                     if((content = body.getJSONObject(i).getJSONArray("content").getJSONObject(i)).has("text")&&content.getString("text").trim().length()>0){
                         question.setText(blankOut(content.getString("text"),articles[art].getString("title")));
                     }
-
-//                Log.e("asdf5",getLargestSection(body).toString());
-//                        if (((content = getLargestSection(body)).has("text"))) {
-//                            try {
-//                                restofarticle = content.getString("text").substring(content.getString("text").indexOf("."));
-//                                restofarticle = restofarticle.substring(0,restofarticle.indexOf("."));
-//                            } catch (java.lang.StringIndexOutOfBoundsException e) {
-//                                restofarticle = content.getString("text");
-//                            }
-//                                question.setText(restofarticle);
-//
-//                        }
-                    //}
-                //}
-
 
 
                 if(question.getText().equals("")) {
@@ -216,7 +201,7 @@ public class Quiz extends AppCompatActivity {
         else{
             for(RadioButton r:options)
                 r.setVisibility(View.VISIBLE);
-            timer.setVisibility(View.VISIBLE);
+            //timer.setVisibility(View.VISIBLE);
             question.setVisibility(View.VISIBLE);
             title.setText(getIntent().getStringExtra("name"));
         }
