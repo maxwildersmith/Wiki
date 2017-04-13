@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -43,7 +45,6 @@ public class Quiz extends AppCompatActivity {
     private boolean started = false;
     private ViewGroup viewGroup;
     private SharedPreferences.Editor url;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +117,8 @@ public class Quiz extends AppCompatActivity {
                         i--;
                 options[correctOpt].setText(articles[art].getString("title"));
                 JSONArray body = new JSONObject(new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_INFO+articles[art].getString("id"),null,"").get()).getJSONArray("sections");
-                url.putString("url", new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_INFO+articles[art].getString("id"),null,"").get());
-                url.commit();
+//                url.putString("url", new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_INFO+articles[art].getString("id"),null,"").get());
+//                url.commit();
                 JSONObject content = null;
                 Log.e("asdf","longest: "+getLargestSection(body));
                 Log.e("asdf"," Object 0 in body "+body.getJSONObject(0));
