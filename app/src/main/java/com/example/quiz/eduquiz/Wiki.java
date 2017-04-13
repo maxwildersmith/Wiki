@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by csaper6 on 3/13/17.
  */
 public class Wiki implements Comparable<Wiki>, Parcelable {
-    String name,url,imgUrl;
+    String name,url,imgUrl = "";
 
     public String getImgUrl() {
         return imgUrl;

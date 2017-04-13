@@ -3,9 +3,12 @@ package com.example.quiz.eduquiz;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
@@ -15,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -30,6 +34,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
@@ -39,11 +44,12 @@ public class Quiz extends AppCompatActivity {
     private RadioButton[] options;//opt1,opt2,opt3,opt4;
     private Button submit;
     private RadioGroup radioGroup;
-    public static final String DATA_NAME = "data stuffs", URLS = "1234";
+    public static final String DATA_NAME = "data stuffs", URLS = "1234", GET_MAIN = "/api/v1/Mercury/WikiVariables";
     private static final String GET_ARTICLES = "/api/v1/Articles/List?", GET_INFO = "/api/v1/Articles/AsSimpleJson?id=";
     private int correctOpt,score,qsLeft;
     private boolean started = false;
     private ViewGroup viewGroup;
+    private ImageView favicon;
     private SharedPreferences.Editor url;
 
     @Override
@@ -55,6 +61,23 @@ public class Quiz extends AppCompatActivity {
         question = (TextView)findViewById(R.id.question);
         submit = (Button)findViewById(R.id.next);
         viewGroup = (ViewGroup) findViewById(R.id.transitions_container2);
+
+        favicon = (ImageView)findViewById(R.id.image);
+        try{
+            String pageURL = new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_MAIN,null,"").get();
+            JSONObject imgJSON = new JSONObject(pageURL);
+            String imgURL = imgJSON.getJSONObject("data").getJSONObject("appleTouchIcon").getString("url");
+
+            Log.e("asdf","URL = "+imgURL);
+            favicon.setImageBitmap(new getImage().execute(imgURL,null,null).get());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         score=0;
         qsLeft=10;
@@ -87,9 +110,8 @@ public class Quiz extends AppCompatActivity {
     private void getData() {
 
         title.setText("Score: "+score+", "+qsLeft+" Questions Left");
-        if(qsLeft<=0) {
+        if(qsLeft<=0)
             finish();
-        }
 
         try {
             String s = new PersonSearch().execute("http://"+getIntent().getStringExtra(DATA_NAME)+GET_ARTICLES,null,"").get();
@@ -156,8 +178,6 @@ public class Quiz extends AppCompatActivity {
         qsLeft--;
         boolean empty=true;
 
-
-
         if(started) {
             for(RadioButton r: options) {
                 if (r.isChecked())
@@ -177,6 +197,7 @@ public class Quiz extends AppCompatActivity {
             for(RadioButton r:options)
                 r.setVisibility(View.VISIBLE);
             question.setVisibility(View.VISIBLE);
+            title.setVisibility(View.VISIBLE);
             title.setText(getIntent().getStringExtra("name"));
         }
         radioGroup.clearCheck();
@@ -213,7 +234,7 @@ public class Quiz extends AppCompatActivity {
 
     }
     public static JSONObject getLargestSection(JSONArray array) throws JSONException {
-        Log.e("asdf666",array.toString());
+        Log.e("asdf",array.toString());
         JSONObject longest = array.getJSONObject(0);
         for(int i =1;i<array.length();i++)
             if(array.getJSONObject(i).getJSONArray("content").getJSONObject(0).optString("text").length()>longest.getJSONArray("content").getJSONObject(0).optString("text").length())
@@ -230,6 +251,54 @@ public class Quiz extends AppCompatActivity {
         for(String word: anserWords)
             out = out.replaceAll(word,blanks);
         return out;
+    }
+    public class getImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+                map = downloadImage(urls[0]);
+
+            return map;
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            Log.d("asdf555",urlString+"asdf");
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
     }
 
     @Override

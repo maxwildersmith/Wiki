@@ -44,14 +44,15 @@ public class WikiAdapter extends ArrayAdapter<Wiki> {
         favicon = (ImageView)convertView.findViewById(R.id.favicon);
         //put the text of the wiki into the appropriate view
         name.setText(person.getUrl());
-        if(!person.getImgUrl().equals(""))
+        if(!person.getImgUrl().equals("")) {
             try {
-                favicon.setImageBitmap(new getImage().execute(person.getImgUrl(),null,null).get());
+                favicon.setImageBitmap(new getImage().execute(person.getImgUrl(), null, null).get());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+        }
 
         return convertView;
 
