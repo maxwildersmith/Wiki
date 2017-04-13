@@ -2,6 +2,7 @@ package com.example.quiz.eduquiz;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewGroup container;
 
+    private Typeface tf1, tf2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         lastScore = (TextView)findViewById(R.id.lastScore);
 
-        score = (Button)findViewById(R.id.score);
+        tf1 = Typeface.createFromAsset(getAssets(), "Cornerstone.ttf");
+                score = (Button)findViewById(R.id.score);
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.go);
 
         viewGroup = (ViewGroup) findViewById(R.id.transition_container);
+        input.setTypeface(tf1);
+        button.setTypeface(tf1);
+        score.setTypeface(tf1);
+        lastScore.setTypeface(tf1);
 
 
         button.setOnClickListener(new View.OnClickListener() {

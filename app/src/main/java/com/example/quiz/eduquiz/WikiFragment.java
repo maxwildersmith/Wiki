@@ -33,6 +33,7 @@ public class WikiFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
+
         wikis = new ArrayList<>();
         Comparator c = null;
         Collections.sort(wikis, c);
