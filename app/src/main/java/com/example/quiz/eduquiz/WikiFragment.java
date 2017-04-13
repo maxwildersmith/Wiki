@@ -52,5 +52,11 @@ public class WikiFragment extends ListFragment {
             adapter.notifyDataSetChanged();
 
     }
+    public void populateListNoSort(ArrayList<Wiki> wikis) {
+        this.wikis.clear();
+        this.wikis.addAll(wikis);
+        adapter.notifyDataSetChanged();
+
+    }
 }
 

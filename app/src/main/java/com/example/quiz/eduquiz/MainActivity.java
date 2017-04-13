@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText input;
     private Button button,score;
-    private String history;
-    private ArrayList<Wiki> wikis;
+    private ArrayList<Wiki> wikis, history;
     private WikiFragment frag;
     public static final String BASE_URL="http://www.wikia.com/api/v1/Wikis/ByString/?string=" ;
     private TextView lastScore;
@@ -60,11 +59,12 @@ public class MainActivity extends AppCompatActivity {
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Score.class));
+                startActivity(new Intent(MainActivity.this,Score.class).putParcelableArrayListExtra("history",history));
             }
         });
 
         wikis = new ArrayList<Wiki>();
+        history = new ArrayList<Wiki>();
         frag = new WikiFragment();
 
         FragmentManager fm = getSupportFragmentManager();
@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                                         .addTransition(new AutoTransition()));
                                 wikis.add(new Wiki(json.getJSONObject(i).optString("name"),json.getJSONObject(i).optString("domain")));
                         }
-                        //s+=json.getJSONObject(i).optString("name")+"\n";
                         frag.populateList(wikis);
 
                     } catch (JSONException e) {
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==101) {
             lastScore.setText(data.getStringExtra("out"));
-            history = data.getStringExtra("out")+history;
+            history.add(0,new Wiki(data.getStringExtra("url")));
         }
     }
 }

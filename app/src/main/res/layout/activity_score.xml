@@ -51,5 +51,9 @@
             android:text="Reset Score"
             android:layout_weight="1" />
     </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frame"></FrameLayout>
 
 </LinearLayout>

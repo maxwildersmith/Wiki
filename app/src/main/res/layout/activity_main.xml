@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lastScore"
-        android:text="Search for a wiki to begin \u2070"/>
+        android:text="Search for a wiki to begin"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
