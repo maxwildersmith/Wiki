@@ -9,5 +9,11 @@
         android:id="@+id/name"
         android:textSize="24dp"
         android:text="NAME NAME"
+        android:layout_gravity="start"
         android:textColor="#000000"/>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/favicon"
+        android:layout_gravity="end"/>
 </LinearLayout>

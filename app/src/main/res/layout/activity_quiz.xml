@@ -16,23 +16,23 @@
         android:layout_height="wrap_content"
         android:text="TITLE"
         android:textSize="20dp"
+        android:visibility="gone"
         android:id="@+id/title"/>
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timer"
-        android:visibility="invisible"
-        android:text="00:00"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/image"/>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:text="ARTICLE DOES NOT HAVE A BODY"
         android:id="@+id/question"/>
     <Space

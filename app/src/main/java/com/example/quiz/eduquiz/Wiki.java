@@ -11,16 +11,30 @@ import java.util.Set;
  * Created by csaper6 on 3/13/17.
  */
 public class Wiki implements Comparable<Wiki>, Parcelable {
-    String name,url;
+    String name,url,imgUrl;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public Wiki(String url){
         this.url = url;
         name = "history wiki";
     }
 
+    public Wiki(String name, String url, String img) {
+        this.name = name;
+        this.url = url;
+        imgUrl = img;
+    }
     public Wiki(String name, String url) {
         this.name = name;
         this.url = url;
+        imgUrl = "";
     }
 
     protected Wiki(Parcel in) {
