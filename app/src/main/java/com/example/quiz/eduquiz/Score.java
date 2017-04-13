@@ -1,5 +1,6 @@
 package com.example.quiz.eduquiz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,13 @@ public class Score extends AppCompatActivity {
     private String pastUrl;
     private WikiFragment frag;
     private boolean historyDisp;
+    private Context mContext;
+    private Activity mActivity;
+
+    private RelativeLayout mRelativeLayout;
+    private Button mButton;
+
+    private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +43,10 @@ public class Score extends AppCompatActivity {
         home = (Button)findViewById(R.id.home);
 
         historyDisp = false;
-
-        //replay = (Button)findViewById(R.id.replay);
         score = (TextView)findViewById(R.id.score);
         history = (Button) findViewById(R.id.history);
+        replay = (Button) findViewById(R.id.replay) ;
+        replay.setVisibility(View.GONE);
         frag = new WikiFragment();
 
         FragmentManager fm = getSupportFragmentManager();
@@ -53,7 +63,6 @@ public class Score extends AppCompatActivity {
                 score.setText("Score: "+getSharedPreferences("stuff", Context.MODE_PRIVATE).getInt("score",-1));
 
                 Toast.makeText(Score.this, "Data Resetted!", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -66,13 +75,6 @@ public class Score extends AppCompatActivity {
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                SharedPreferences pref = getSharedPreferences(URLS, MODE_PRIVATE);
-//                String restoredText = pref.getString("url", null);
-//
-//                if (restoredText != null) {
-//                    pastUrl = pref.getString("url", "NO URL FOUND!");
-//                }
-//                Toast.makeText(Score.this, pastUrl, Toast.LENGTH_SHORT).show();
                 wikis = getIntent().getParcelableArrayListExtra("history");
                 historyDisp = !historyDisp;
                 if(historyDisp)

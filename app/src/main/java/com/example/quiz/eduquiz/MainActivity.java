@@ -1,20 +1,17 @@
 package com.example.quiz.eduquiz;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.AutoTransition;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,9 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,53 +45,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL="http://www.wikia.com/api/v1/Wikis/ByString/?string=" ;
     private TextView lastScore;
     private ViewGroup viewGroup;
-    private boolean imagesEnabled = false;
-    private String locale = "en";
-    private AlertDialog.Builder builder;
 
     private ViewGroup container;
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.images:
-                imagesEnabled = !imagesEnabled;
-                item.setTitle("Experimnet: "+imagesEnabled);
-                return true;
-            case R.id.locale:
-                item.setTitle("Locale: "+locale);
-                builder = new AlertDialog.Builder(this);
-                builder.setItems(new String[]{"English", "Español", "Norsk", "日本語 ","中文"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (i){
-                            case 0:
-                                locale="en";
-                                break;
-                            case 1:
-                                locale="es";
-                                break;
-                            case 2:
-                                locale="no";
-                                break;
-                            case 3:
-                                locale="ja";
-                                break;
-                            case 4:
-                                locale="zh";
-                                break;
-                        }
-                    }
-                });
-                builder.show();
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    private Typeface tf1, tf2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         lastScore = (TextView)findViewById(R.id.lastScore);
 
-        score = (Button)findViewById(R.id.score);
+        tf1 = Typeface.createFromAsset(getAssets(), "Cornerstone.ttf");
+                score = (Button)findViewById(R.id.score);
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.go);
 
         viewGroup = (ViewGroup) findViewById(R.id.transition_container);
+        input.setTypeface(tf1);
+        button.setTypeface(tf1);
+        score.setTypeface(tf1);
+        lastScore.setTypeface(tf1);
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -154,13 +112,10 @@ public class MainActivity extends AppCompatActivity {
                         jsonO = new JSONObject(out);
                         JSONArray json = jsonO.getJSONArray("items");
                         for(int i=0;i<json.length();i++)
-                            if(json.getJSONObject(i).optString("language").equals(locale)&&json.getJSONObject(i).optString("topic")!=null){
+                            if(json.getJSONObject(i).optString("language").equals("en")&&json.getJSONObject(i).optString("topic")!=null){
                                 TransitionManager.beginDelayedTransition(viewGroup, new TransitionSet()
                                         .addTransition(new AutoTransition()));
-                                if(imagesEnabled)
-                                     wikis.add(new Wiki(json.getJSONObject(i).optString("name"),json.getJSONObject(i).optString("domain"),new JSONObject(new PersonSearch().execute("https://"+json.getJSONObject(i).optString("domain")+Quiz.GET_MAIN,null,"").get()).getJSONObject("data").optString("favicon")));
-                                else
-                                    wikis.add(new Wiki(json.getJSONObject(i).optString("name"),json.getJSONObject(i).optString("domain")));
+                                wikis.add(new Wiki(json.getJSONObject(i).optString("name"),json.getJSONObject(i).optString("domain")));
                         }
                         frag.populateList(wikis);
 
@@ -182,6 +137,20 @@ public class MainActivity extends AppCompatActivity {
 
             }});
 
+
+
+//        try {
+//            InputStream in = getAssets().open("data.json");
+//            BufferedReader read =  new BufferedReader(new InputStreamReader(in));
+//            String line;
+//            while((line=read.readLine())!= null)
+//                s+=line;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "onCreate: blah blah");
+//            Toast.makeText(MainActivity.this, "ARGGHHHH!!!!", Toast.LENGTH_SHORT).show();
+//        }
+
     }
 
     public class PersonSearch extends AsyncTask<String, Void, String> {
@@ -198,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 String line;
                 while((line=read.readLine())!= null)
                     out+=line;
-                Log.d("WikiSearcch",out);
+                Log.e("asdf",out);
                 return out;
 
             } catch (IOException e) {
